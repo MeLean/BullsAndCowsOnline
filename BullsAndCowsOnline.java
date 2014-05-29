@@ -4,7 +4,7 @@ import java.util.Scanner;
 import java.io.*;
 import java.net.*;
 
-public class BullsAndCowsMultiPlayer {
+public class BullsAndCowsOnline {
 	static String serverAddress = "cowsbullsonline.cnapsys.com";
 	static String serverAddress2 = "cowsbullsonline2.cnapsys.com";// "89.253.133.54 ";
 	static int serverPort = 9790;
@@ -73,7 +73,7 @@ public class BullsAndCowsMultiPlayer {
 			userDecigion = input.nextInt();
 			if (!isConnected) {
 				if (userDecigion == 1) {
-					SinglePlayer();
+					SinglePlayer.singlePlayer();
 				} else if (userDecigion == 2) {
 					return;
 				} else {
@@ -81,7 +81,7 @@ public class BullsAndCowsMultiPlayer {
 				}
 			} else {
 				if (userDecigion == 1) {
-					SinglePlayer();
+					SinglePlayer.singlePlayer();
 					return;
 				} else if (userDecigion != 2) {
 					System.exit(0);
@@ -115,7 +115,7 @@ public class BullsAndCowsMultiPlayer {
 		try {
 			result = inFromServer.readLine();
 			// check if the message is a system message
-			if (result.equals(Messages.RequestUserName)) {
+			if (result.equals(Messages.REQUEST_USER_NAME)) {
 				System.out.println("Choose a unique name:");
 				userName = input.nextLine();
 				while (userName.equals("")) {
@@ -123,13 +123,13 @@ public class BullsAndCowsMultiPlayer {
 				}
 				sendClient(userName);
 				return readClient();
-			} else if (result.equals(Messages.AwaitingCommand)) {
-				sendClient(Messages.ReportClients);
+			} else if (result.equals(Messages.AWAITIN_GCOMMAND)) {
+				sendClient(Messages.REPORT_CLIENTS);
 				System.out
 						.println("Choose a oponent from the list, or wait for invitation.");
 				printSeparator();
 				return readClient();
-			} else if (result.equals(Messages.ReportClients)) {
+			} else if (result.equals(Messages.REPORT_CLIENTS)) {
 				int connectedPlayersCount = Integer.parseInt(readClient());
 				connectedClients = new String[connectedPlayersCount];
 				if (connectedPlayersCount == 0) {
@@ -165,18 +165,18 @@ public class BullsAndCowsMultiPlayer {
 						// fix here as it will prevent receiving invitations
 					}
 					if (decigion == connectedPlayersCount + 1) {
-						sendClient(Messages.ReportClients);
+						sendClient(Messages.REPORT_CLIENTS);
 						System.out
 								.println("Choose a oponent from the list, or wait for invitation.");
 						printSeparator();
 						return readClient();
 					} else if (decigion == connectedPlayersCount + 2) {
-						sendClient(Messages.RequestUserName);
+						sendClient(Messages.REQUEST_USER_NAME);
 					} else if (decigion == connectedPlayersCount + 3) {
-						sendClient(Messages.QuitMultiplayer);
+						sendClient(Messages.QUIT_MULTIPLAYER);
 						throw new Exception();
 					} else {
-						sendClient(Messages.RequestToPlay);
+						sendClient(Messages.REQUEST_TO_PLAY);
 
 						sendClient(connectedClients[decigion - 1]);
 						oponent = connectedClients[decigion - 1];
@@ -190,39 +190,39 @@ public class BullsAndCowsMultiPlayer {
 						return readClient();
 					}
 				}
-			} else if (result.equals(Messages.OponentNotAvailable)) {
-				sendClient(Messages.ReportClients);
+			} else if (result.equals(Messages.OPONENT_NOT_AVAILABLE)) {
+				sendClient(Messages.REPORT_CLIENTS);
 				System.out
 						.println("It looks like the player is already playing with someone else, or has been disconnected!");
 				System.out.println("Choose another player from the list:");
 				return readClient();
-			} else if (result.equals(Messages.AcceptTeamPlay)) {
+			} else if (result.equals(Messages.ACCEPT_TEAM_PLAY)) {
 				System.out
 						.println("Your invitation to play has been accepted.");
 				return readClient();
-			} else if (result.equals(Messages.DeclineTeamPlay)) {
-				sendClient(Messages.ReportClients);
+			} else if (result.equals(Messages.DECLINE_TEAM_PLAY)) {
+				sendClient(Messages.REPORT_CLIENTS);
 				System.out.println("Your invitation has been declined.");
 				System.out
 						.println("Choose another oponent from the list, or wait for invitation.");
 				printSeparator();
 				return readClient();
-			} else if (result.equals(Messages.StartTeamPlay)) {
+			} else if (result.equals(Messages.START_TEAM_PLAY)) {
 				System.out
 						.println("Invitation accepted. The game is starting. Type 'quit' to leave.");
-				Multiplayer(false);
-			} else if (result.equals(Messages.UnknownCommand)) {
+				multiplayer(false);
+			} else if (result.equals(Messages.UNKNOWN_COMMAND)) {
 				System.out
 						.println("Something went wrong and the game will restart.");
 				printSeparator();
-				sendClient(Messages.QuitMultiplayer);
+				sendClient(Messages.QUIT_MULTIPLAYER);
 				throw new Exception();
-			} else if (result.equals(Messages.RecconnectRequest)) {
+			} else if (result.equals(Messages.RECCONNECT_REQUEST)) {
 				System.out
 						.println("Something went wrong and the game will restart.");
 				printSeparator();
 				throw new Exception();
-			} else if (result.equals(Messages.RequestToPlay)) {
+			} else if (result.equals(Messages.REQUEST_TO_PLAY)) {
 				oponent = readClient();
 				System.out
 						.println(oponent + " sent you an invitation to play.");
@@ -231,18 +231,18 @@ public class BullsAndCowsMultiPlayer {
 				System.out.println("2: Decilne");
 				int decigion = input.nextInt();
 				if (decigion == 1) {
-					sendClient(Messages.AcceptTeamPlay);
+					sendClient(Messages.ACCEPT_TEAM_PLAY);
 					sendClient(oponent);
 					isFirst = false;
 					wasFirst = false;
 				} else {
-					sendClient(Messages.DeclineTeamPlay);
+					sendClient(Messages.DECLINE_TEAM_PLAY);
 
 					sendClient(oponent);
 
 					// do not confuse yourself, oponent must be returned before
 					// requesting clients again :)
-					sendClient(Messages.ReportClients);
+					sendClient(Messages.REPORT_CLIENTS);
 					System.out
 							.println("Choose oponent from the list, or wait for invitation.");
 					printSeparator();
@@ -292,7 +292,7 @@ public class BullsAndCowsMultiPlayer {
 		}
 	}
 
-	static void Multiplayer(boolean wasDice) throws Exception {
+	static void multiplayer(boolean wasDice) throws Exception {
 		hasDice = false;
 		isDice = false;
 		hasEnded = false;
@@ -337,9 +337,9 @@ public class BullsAndCowsMultiPlayer {
 				}
 				if (remoteStream.available() != 0) {
 					oponentMessage = readClient();
-					if (oponentMessage.equals(Messages.GameEnded)
+					if (oponentMessage.equals(Messages.GAME_OVER)
 							|| oponentMessage
-									.equals(Messages.OponentDisconnected)) {
+									.equals(Messages.OPONENT_DISCONNECTED)) {
 						System.out.println("Game ended.");
 						throw new Exception("2");
 					}
@@ -382,7 +382,7 @@ public class BullsAndCowsMultiPlayer {
 					quited = true;
 					hasEnded = true;
 					break;
-				} else if (oponentMessage.equals(Messages.Dice)) {
+				} else if (oponentMessage.equals(Messages.DICE)) {
 					if (!isDice) {
 						hasDice = true;
 						continue;
@@ -414,13 +414,13 @@ public class BullsAndCowsMultiPlayer {
 					sendClient("You got my number, but I have one more try.");
 					System.out.println(oponent
 							+ " found your number, you have one last try.");
-					sendClient(Messages.Dice);
+					sendClient(Messages.DICE);
 					hasDice = true;
 					isDice = true;
 				} else {
 					if (hasDice) {
 						System.out.println(oponent + " found your number too.");
-						sendClient(Messages.Dice);
+						sendClient(Messages.DICE);
 						isDice = true;
 						break;
 					}
@@ -443,73 +443,18 @@ public class BullsAndCowsMultiPlayer {
 			if (remoteStream.available() != 0) {
 				System.out.println(readClient());
 			}
-			Multiplayer(true);
+			multiplayer(true);
 		}
 		if (!wasDice) {
 			printSeparator();
 			Thread.sleep(2000);
 			if (!hasEnded) {
-				sendClient(Messages.GameEnded);
+				sendClient(Messages.GAME_OVER);
 			}
 		} else {
 			hasDice = false;
 			isDice = false;
 		}
-	}
-
-	static void SinglePlayer() throws InterruptedException {
-		System.out
-				.println("You have started a single player game.\nThe computer have choosen a number!");
-		Random gen = new Random();
-		int target = 0;
-		do {
-			target = (gen.nextInt(9000) + 1000);
-		} while (hasDupes(target));
-
-		String targetStr = target + "";
-		// System.out.println("Because this is a presentation, I give you a Joker: "
-		// + targetStr); //hack which printing chosen number for the
-		// presentation comment this
-
-		boolean guessed = false;
-		int guesses = 0;
-		String errMsg = "Wrong number. ";
-		do {
-			int bulls = 0;
-			int cows = 0;
-			System.out.print("Enter your guess: ");
-			int guess = 0;
-
-			try {
-				input = new Scanner(System.in);
-				guess = input.nextInt();
-			} catch (InputMismatchException e) {
-				System.out.print(errMsg);
-				continue;
-			}
-
-			if (hasDupes(guess) || guess < 1000 || guess > 9999) {
-				System.out.print(errMsg);
-				continue;
-			}
-
-			guesses++;
-			String guessStr = guess + "";
-
-			for (int i = 0; i < guessStr.length(); i++) {
-				if (guessStr.charAt(i) == targetStr.charAt(i)) {
-					bulls++;
-				} else if (targetStr.contains(guessStr.charAt(i) + "")) {
-					cows++;
-				}
-			}
-			if (bulls == guessStr.length()) {
-				guessed = true;
-			} else {
-				System.out.println(cows + " Cows and " + bulls + " Bulls.");
-			}
-		} while (!guessed);
-		System.out.println("You won after " + guesses + " guesses!");
 	}
 
 	static void printSeparator() {

@@ -1,19 +1,19 @@
 public class Messages
     {
-        public static String RecconnectRequest = "rcn";
-        public static String RequestUserName = "unm";
-        public static String RequestToPlay = "rtp";
-        public static String AcceptTeamPlay = "atp";
-        public static String StartTeamPlay = "stp";
-        public static String DeclineTeamPlay = "dtp";
-        public static String RespondToRequestFirst = "rtr";
-        public static String RespondUserToPlayWith = "rupw";
-        public static String QuitMultiplayer = "qmp";
-        public static String OponentNotAvailable = "ona";
-        public static String GameEnded = "gen";
-        public static String ReportClients = "rcl";
-        public static String OponentDisconnected = "opd";
-        public static String UnknownCommand = "unk";
-        public static String AwaitingCommand = "awc";
-        public static String Dice = "dic";
+        public static final String RECCONNECT_REQUEST = "rcn";
+        public static final String REQUEST_USER_NAME = "unm";
+        public static final String REQUEST_TO_PLAY = "rtp";
+        public static final String ACCEPT_TEAM_PLAY = "atp";
+        public static final String START_TEAM_PLAY = "stp";
+        public static final String DECLINE_TEAM_PLAY = "dtp";
+        public static final String RESPOND_TO_REQUEST_FIRST = "rtr";//unused
+        public static final String RESPOND_USER_TO_PLAY_WITH = "rupw";//unused
+        public static final String QUIT_MULTIPLAYER = "qmp";
+        public static final String OPONENT_NOT_AVAILABLE = "ona";
+        public static final String GAME_OVER = "gen";
+        public static final String REPORT_CLIENTS = "rcl";
+        public static final String OPONENT_DISCONNECTED = "opd";
+        public static final String UNKNOWN_COMMAND = "unk";
+        public static final String AWAITIN_GCOMMAND = "awc";
+        public static final String DICE = "dic";
     }                 
