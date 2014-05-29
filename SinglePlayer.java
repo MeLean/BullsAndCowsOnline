@@ -7,8 +7,9 @@ public class SinglePlayer {
 	static void singlePlayer() throws InterruptedException {
 		Scanner input = new Scanner(System.in);
 		input = new Scanner(System.in);
-		System.out
-				.println("You have started a single player game.\nThe computer has choosen a number!");
+		System.out.println("You have started a single player game.");
+		System.out.println("The computer has choosen a number!");
+		System.out.println("If you want to give up. Just type: \"give up\". ");
 		Random gen = new Random();
 		int target = 0;
 		do {
@@ -21,6 +22,7 @@ public class SinglePlayer {
 		// presentation comment this
 
 		boolean guessed = false;
+		boolean givedUp = false;
 		int guesses = 0;
 		String errMsg = "Wrong number. ";
 		do {
@@ -32,9 +34,18 @@ public class SinglePlayer {
 			try {
 				input = new Scanner(System.in);
 				guess = input.nextInt();
-			} catch (InputMismatchException e) {
-				System.out.print(errMsg);
-				continue;
+			} catch (InputMismatchException e) {			
+				String strInputString = input.nextLine();
+				if (strInputString.equalsIgnoreCase("give up") || strInputString.equalsIgnoreCase("\"give up\"")) {
+					System.out.println("Poor loser! You gived up!");
+					System.out.println("The number was: " + targetStr);
+					givedUp = true;
+					break;
+				}else{
+					System.out.print(errMsg);
+					continue;
+				}
+
 			}
 
 			if (BullsAndCowsOnline.hasDupes(guess) || guess < 1000 || guess > 9999) {
@@ -58,6 +69,10 @@ public class SinglePlayer {
 				System.out.println(cows + " Cows and " + bulls + " Bulls.");
 			}
 		} while (!guessed);
-		System.out.println("You won after " + guesses + " guesses!");
+		
+		if (!givedUp) {
+			System.out.println("You won after " + guesses + " guesses!");
+		}
+		
 	}
 }

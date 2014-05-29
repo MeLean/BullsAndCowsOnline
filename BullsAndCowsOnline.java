@@ -48,44 +48,51 @@ public class BullsAndCowsOnline {
 
 		while (true) {
 			input = new Scanner(System.in);
-			inititializeGame();
+			try {
+				inititializeGame();
+			} catch (Exception e) {
+				input.reset();
+			}
 			disposeConnection();
 		}
 	}
 
-	static void inititializeGame() {
-		boolean isConnected = checkConnection();
-		int userDecigion = 0;
-		if (isConnected) {
-			System.out.println("Make your choice:");
-			System.out.println("1: SinglePlayer");
-			System.out.println("2: MultiPlayer");
-			System.out.println("3: Exit");
-		} else {
-			System.out
-					.println("Make your choice (You seem to be offline. Choose 2 to check the connection again):");
-			System.out.println("1: SinglePlayer");
-			System.out.println("2: Check connection");
-			System.out.println("3: Exit");
-		}
+	static void inititializeGame() throws IOException, Exception {
 
-		try {
-			userDecigion = input.nextInt();
+		int userDecigion = 0;
+	
+		System.out.println("Make your choice:");
+		System.out.println("1: SinglePlayer");
+		System.out.println("2: MultiPlayer");
+		System.out.println("3: Exit");		
+		userDecigion = input.nextInt();
+		
+		if (userDecigion == 1) {
+			SinglePlayer.singlePlayer();
+			return;
+		} else if (userDecigion != 2) {			
+			System.exit(0);
+		} else {
+			System.out.println("Checking connection. Please wait...!");
+			
+			boolean isConnected = checkConnection();
+			
 			if (!isConnected) {
-				if (userDecigion == 1) {
-					SinglePlayer.singlePlayer();
-				} else if (userDecigion == 2) {
-					return;
-				} else {
-					System.exit(0);
-				}
-			} else {
+				System.out
+						.println("Make your choice (You seem to be offline. Choose 2 to check the connection again):");
+				System.out.println("1: SinglePlayer");
+				System.out.println("2: Check connection");
+				System.out.println("3: Exit");
+				
 				if (userDecigion == 1) {
 					SinglePlayer.singlePlayer();
 					return;
 				} else if (userDecigion != 2) {
 					System.exit(0);
 				}
+				
+			}	
+		}
 				while (true) {
 					if (remoteStream.available() != 0) {
 						readClient();
@@ -93,10 +100,7 @@ public class BullsAndCowsOnline {
 						Thread.sleep(1);
 					}
 				}
-			}
-		} catch (Exception ex) {
-			input.reset();
-		}
+
 	}
 
 	static boolean hasDupes(int num) {
