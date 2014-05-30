@@ -81,7 +81,7 @@ public class BullsAndCowsOnline {
 			
 			if (!isConnected) {
 				System.out
-						.println("Make your choice (You seem to be offline. Choose 2 to check the connection again):");
+						.println("Make your choice (You seem to be offline. Choose 2 and try to connect again):");
 				System.out.println("1: SinglePlayer");
 				System.out.println("2: Try again");
 				System.out.println("3: Exit");
