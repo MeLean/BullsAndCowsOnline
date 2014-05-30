@@ -48,16 +48,18 @@ public class BullsAndCowsOnline {
 
 		while (true) {
 			input = new Scanner(System.in);
+		
 			try {
 				inititializeGame();
 			} catch (Exception e) {
 				input.reset();
 			}
+
 			disposeConnection();
 		}
 	}
 
-	static void inititializeGame() throws IOException, Exception {
+	static void inititializeGame() throws Exception {
 
 		int userDecigion = 0;
 	
@@ -81,9 +83,9 @@ public class BullsAndCowsOnline {
 				System.out
 						.println("Make your choice (You seem to be offline. Choose 2 to check the connection again):");
 				System.out.println("1: SinglePlayer");
-				System.out.println("2: Check connection");
+				System.out.println("2: Try again");
 				System.out.println("3: Exit");
-				
+				userDecigion = input.nextInt();
 				if (userDecigion == 1) {
 					SinglePlayer.singlePlayer();
 					return;
